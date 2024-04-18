@@ -51,6 +51,44 @@ public:
 	}
 
 
+	void setDay(short day) 
+	{
+		_day = day;
+	}
+
+	short getDay() 
+	{
+		return _day;
+	}
+
+	__declspec(property(get = getDay, put = setDay)) short day;
+
+	void setMonth(short month)
+	{
+		_month = month;
+	}
+
+	short getMonth()
+	{
+		return _month;
+	}
+
+	__declspec(property(get = getMonth, put = setMonth)) short month;
+
+
+	void setYear(short year)
+	{
+		_year = year;
+	}
+
+	short getYear()
+	{
+		return _year;
+	}
+
+	__declspec(property(get = getYear, put = setYear)) short year;
+
+
 	//   void getSystemDate() 
 	   //{
 	   //	time_t t = time(0);
@@ -107,6 +145,37 @@ public:
 		return numberOfDaysInYear(_year);
 	}
 
+
+	static short numberOfHoursInYear(short year) 
+	{
+		return numberOfDaysInYear(year) * 24;
+	}
+
+	short numberOfHoursInYear() 
+	{
+		return numberOfHoursInYear(_year);
+	}
+
+	static int numberOfMinutesInYear(short year) 
+	{
+		return numberOfHoursInYear(year) * 60;
+	}
+
+	int numberOfMinutesInYear() 
+	{
+		return numberOfMinutesInYear(_year);
+	}
+
+	static int numberOfSecondsInYear(short year) 
+	{
+		return numberOfMinutesInYear(year) * 60;
+	}
+
+    int numberOfSecondsInYear()
+	{
+		return numberOfSecondsInYear(_year);
+	}
+
 	static short numberOfDaysInMonth(short year, short month)
 	{
 		if (month < 1 || month > 12)
@@ -123,6 +192,51 @@ public:
 		return numberOfDaysInMonth(_year, _month);
 	}
 
+
+	static short numberOfHoursInMonth(short year, short month)
+	{
+		return numberOfDaysInMonth(year, month) * 24;
+	}
+
+	short numberOfHoursInMonth() 
+	{
+		return numberOfHoursInMonth(_year, _month);
+	}
+
+	static int numberOfMinutesInMonth(short year, short month) 
+	{
+		return numberOfHoursInMonth(year, month) * 60;
+	}
+
+	int numberOfMinutesInMonth() 
+	{
+		return numberOfMinutesInMonth(_year, _month);
+	}
+
+	static int numberOfSecondsInMonth(short year, short month) 
+	{
+		return numberOfMinutesInMonth(year, month) * 60;
+	}
+
+	int numberOfSecondsInMonth() 
+	{
+		return numberOfSecondsInMonth(_year, _month);
+	}
+
+	short numberOfHoursInDay() 
+	{
+		return 24;
+	}
+
+	short numberOfMinutesInDay() 
+	{
+		return numberOfHoursInDay() * 60;
+	}
+
+	int numberOfSecondsInDay() 
+	{
+		return numberOfMinutesInDay() * 60;
+	}
 
 	static bool isValid(DateTime date)
 	{

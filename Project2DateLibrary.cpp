@@ -1,5 +1,6 @@
 #include <iostream>
 #include "DateTime.h"
+#include <iomanip>
 using namespace std;
 
 
@@ -148,6 +149,28 @@ int main()
 
 	date1.decreaseDateByOneMillennium();
 	date1.print();
+
+	cout << "\n_______________________________________\n";
+
+	cout << "There is " << left << setw(15) << date1.numberOfDaysInYear() << " Days In Year " << date1.year << endl;
+	cout << "There is " << left << setw(15) << date1.numberOfHoursInYear() << " Hours In Hours " << date1.year << endl;
+	cout << "There is " << left << setw(15) << date1.numberOfMinutesInYear() << " Minutes In Minutes " << date1.year << endl;
+	cout << "There is " << left << setw(15) << date1.numberOfSecondsInYear() << " Seconds In Year " << date1.year << endl;
+	cout << "There is " << left << setw(15) << date1.numberOfDaysInMonth() << " Days In Month " << date1.month << endl;
+	cout << "There is " << left << setw(15) << date1.numberOfHoursInMonth() << " Hours In Year " << date1.month << endl;
+	cout << "There is " << left << setw(15) << date1.numberOfMinutesInMonth() << " Minutes In Year " << date1.month << endl;
+	cout << "There is " << left << setw(15) << date1.numberOfSecondsInMonth() << " Seconds In Year " << date1.month << endl;
+
+	cout << "There is " << left << setw(15) << date1.numberOfHoursInDay()   << " Hours In Day " << endl;
+	cout << "There is " << left << setw(15) << date1.numberOfMinutesInDay() << " Minutes In Day "<< endl;
+	cout << "There is " << left << setw(15) << date1.numberOfSecondsInDay() << " Seconds In Day "<< endl;
+
+
+	cout << "\n_______________________________________\n";
+
+
+	
+
 
 	DateTime::increaseDateByOneMonth(DateTime(31, 1, 2023)).print();
 	DateTime::decreaseDateByOneDay(DateTime(1, 1, 2024)).print();
