@@ -11,9 +11,42 @@ int main()
 
 	date1.print();
 
+	cout << "Business Day : " << date1.calculateBusinessDay(DateTime(1, 5, 2024)) << endl;
+	cout << "Business Day : " << date1.calculateWeekendDays(DateTime(1, 5, 2024)) << endl;
+	cout << "My Age IN Days Is   : " << DateTime::calculateMyAgeInDays(DateTime(9, 11, 1999), false) << endl;
+
+	cout << DateTime::getDifferenceInDays(date1, DateTime(9, 11, 1999)) << endl;
+	cout << DateTime::getDifferenceInDays(DateTime(9, 11, 1999), date1) << endl;
+
+	cout << date1.dayUntilTheEndOfTheYear() << " Days Until The End Of The  Year .\n";
+	cout << date1.dayUntilTheEndOfTheMonth() << " Days Until The End Of The  Month .\n";
+	cout << date1.dayUntilTheEndOfTheWeek() << " Days Until The End Of The  Week .\n";
+	
+	DateTime date(1, 1, 2025);
+
+	cout << "Before Swap : \n";
+	date1.print();
+	date.print();
+
+	DateTime::swapDates(date1, date);
+
+	cout << "After Swap : \n";
+	date1.print();
+	date.print();
+
+
+	cout << date1.compareDates(date, date1);
+
+	return 0;
+
+	//date1.print();
+
 	cout << "Today is : " << date1.getDayShortName() << endl;
 
-	date1.increaseDateByOneDay();
+	date1.addOneDay();
+
+
+
 
 	date1.print();
 
@@ -41,7 +74,7 @@ int main()
 
 	cout << "My Age IN Days Is   : " << DateTime::calculateMyAgeInDays(DateTime(9, 11, 1999), false) << endl;
 
-	date1.increaseDateByDays(1000);
+	date1.addDays(1000);
 
 	date1.print();
 	cout << "Day is : " << date1.getDayShortName() << endl;

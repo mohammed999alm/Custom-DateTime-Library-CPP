@@ -445,7 +445,7 @@ public:
 	}
 
 
-	static DateTime increaseDateByOneDay(DateTime date)
+	static DateTime addOneDay(DateTime date)
 	{
 		if (isLastDayInMonth(date))
 		{
@@ -472,30 +472,30 @@ public:
 	}
 
 
-	void increaseDateByOneDay()
+	void addOneDay()
 	{
-		DateTime date = increaseDateByOneDay(*this);
+		DateTime date = addOneDay(*this);
 
 		this->_day = date._day;
 		this->_month = date._month;
 		this->_year = date._year;
 	}
 
-	static DateTime increaseDateByDays(DateTime date, int days)
+	static DateTime addDays(DateTime date, int days)
 	{
 
 		for (int i = 1; i <= days; i++)
 		{
-			date = increaseDateByOneDay(date);
+			date = addOneDay(date);
 		}
 
 		return date;
 	}
 
 
-	void increaseDateByDays(int days)
+	void addDays(int days)
 	{
-		DateTime date = increaseDateByDays(*this, days);
+		DateTime date = addDays(*this, days);
 
 		this->_day = date._day;
 		this->_month = date._month;
@@ -507,7 +507,7 @@ public:
 	{
 		for (short i = 1; i <= 7; i++)
 		{
-			date = increaseDateByOneDay(date);
+			date = addOneDay(date);
 		}
 
 		return date;
@@ -966,7 +966,7 @@ public:
 	}
 
 
-	static int calculateMyAgeInDays(DateTime date, bool includeEndDay = true) 
+	static int calculateMyAgeInDays(DateTime date, bool includeEndDay = false) 
 	{
 		
 		DateTime localTime;
@@ -974,23 +974,32 @@ public:
 		return date.getDifferenceInDays(date, localTime, includeEndDay);
 	}
 
-	int calculateMyAgeInDays(bool includeEndDay = true) 
+	int calculateMyAgeInDays(bool includeEndDay = false) 
 	{
 		return calculateMyAgeInDays(*this, includeEndDay);
 	}
 
-	static int getDifferenceInDays(DateTime date1, DateTime date2, bool includeEndDay = true) 
+	static int getDifferenceInDays(DateTime date1, DateTime date2, bool includeEndDay = false) 
 	{
 		int countDays = 0;
+
+		short swapFlag = 1;
+
+		if (isDateAfterDate2(date1, date2)) 
+		{
+			swapDates(date1, date2);
+
+			swapFlag = -1;
+		}
 		
 		while (isDateBeforeDate2(date1, date2)) 
 		{
 			countDays++;
 
-			date1 = increaseDateByOneDay(date1);
+			date1 = addOneDay(date1);
 		}
 
-		return (includeEndDay) ? ++countDays : countDays;
+		return (includeEndDay) ? ++countDays * swapFlag: countDays * swapFlag;
 	}
 
 
@@ -1003,6 +1012,160 @@ public:
 	{
 		return dayOfWeekOrder(*this);
 	}
+
+	static bool isEndOfTheWeek(DateTime date) 
+	{
+		return date.dayOfWeekOrder() == 6;
+	}
+
+	bool isEndOfTheWeek() 
+	{
+		return isEndOfTheWeek(*this);
+	}
+
+	static bool isWeekEnd(DateTime date) 
+	{
+		short dayWeekOrder = date.dayOfWeekOrder();
+
+		return (dayWeekOrder == 5 || dayWeekOrder == 6);
+	}
+
+	bool isWeekEnd() 
+	{
+		return isWeekEnd(*this);
+	}
+
+	static bool isBusinessDay(DateTime date) 
+	{
+		return !isWeekEnd(date);
+	}
+
+	bool isBusinessDay() 
+	{
+		return isBusinessDay(*this);
+	}
+
+
+	static short calculateBusinessDay(DateTime dateFrom, DateTime dateTo) 
+	{
+		short daysCounter = 0;
+
+		while (dateFrom.isDateBeforeDate2(dateTo)) 
+		{
+			if (dateFrom.isBusinessDay()) 
+			{
+				daysCounter++;
+			}
+
+			dateFrom.addOneDay();
+		}
+
+		return daysCounter;
+	}
+
+	short calculateBusinessDay(DateTime dateTo) 
+	{
+		return calculateBusinessDay(*this, dateTo);
+	}
+
+
+	static short calculateWeekendDays(DateTime dateFrom, DateTime dateTo)
+	{
+		short daysCounter = 0;
+
+		while (dateFrom.isDateBeforeDate2(dateTo))
+		{
+			if (dateFrom.isWeekEnd())
+			{
+				daysCounter++;
+			}
+
+			dateFrom.addOneDay();
+		}
+
+		return daysCounter;
+	}
+
+	short calculateWeekendDays(DateTime dateTo)
+	{
+		return calculateWeekendDays(*this, dateTo);
+	}
+
+
+	static short dayUntilTheEndOfTheYear(DateTime date) 
+	{
+		DateTime endOfYearDate;
+
+		endOfYearDate._year = date._year;
+		endOfYearDate._month = 12;
+		endOfYearDate._day = 31;
+
+		return date.getDifferenceInDays(endOfYearDate, true);
+	}
+
+	short dayUntilTheEndOfTheYear() 
+	{
+		return dayUntilTheEndOfTheYear(*this);
+	}
+
+
+	static short dayUntilTheEndOfTheMonth(DateTime date)
+	{
+		DateTime endOfMonthDate;
+
+		endOfMonthDate._year = date._year;
+		endOfMonthDate._month = date._month;
+		endOfMonthDate._day = endOfMonthDate.numberOfDaysInMonth();
+
+		return date.getDifferenceInDays(endOfMonthDate, true);
+	}
+
+
+	short dayUntilTheEndOfTheMonth() 
+	{
+		return dayUntilTheEndOfTheMonth(*this);
+	}
+
+
+	static short dayUntilTheEndOfTheWeek(DateTime date) 
+	{
+		return 6 - date.dayOfWeekOrder();
+	}
+
+	short dayUntilTheEndOfTheWeek() 
+	{
+		return dayUntilTheEndOfTheWeek(*this);
+	}
+
+	static void swapDates(DateTime &date1, DateTime &date2) 
+	{
+		DateTime temp;
+
+		temp = date1;
+		date1 = date2;
+		date2 = temp;
+	}
+
+
+	enum enCompareDate { Before = -1, Equal, After};
+
+	static enCompareDate compareDates(DateTime date1, DateTime date2)
+	{
+		if (isDateAfterDate2(date1, date2))
+			return enCompareDate::After;
+		
+		if (isDateBeforeDate2(date1, date2))
+			return enCompareDate::Before;
+
+		else
+			return enCompareDate::Equal;
+	}
+
+	enCompareDate compareDates(DateTime date) 
+	{
+		return compareDates(*this, date);
+	}
+
 
 	static void print(short day, short month, short year) 
 	{
